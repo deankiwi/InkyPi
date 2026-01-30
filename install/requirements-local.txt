@@ -1,0 +1,17 @@
+flask
+python-dotenv
+requests
+urllib3
+werkzeug
+pillow
+
+pytz
+openai
+numpy
+icalendar
+recurring-ical-events
+psutil
+feedparser
+waitress
+astral
+pytest

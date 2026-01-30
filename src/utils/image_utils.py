@@ -84,6 +84,8 @@ def apply_image_enhancement(img, image_settings={}):
 
 def compute_image_hash(image):
     """Compute SHA-256 hash of an image."""
+    if image is None:
+        return None
     image = image.convert("RGB")
     img_bytes = image.tobytes()
     return hashlib.sha256(img_bytes).hexdigest()
@@ -108,7 +110,12 @@ def take_screenshot_html(html_str, dimensions, timeout_ms=None):
 
 def _find_chromium_binary():
     """Find the first available Chromium-based binary in system PATH."""
-    candidates = ["chromium-headless-shell", "chromium", "chrome"]
+    candidates = [
+        "chromium-headless-shell", 
+        "chromium", 
+        "chrome", 
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    ]
     for candidate in candidates:
         path = shutil.which(candidate)
         if path:

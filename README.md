@@ -86,6 +86,29 @@ Note:
 
 For more details, including instructions on how to image your microSD with Raspberry Pi OS, refer to [installation.md](./docs/installation.md). You can also checkout [this YouTube tutorial](https://youtu.be/L5PvQj1vfC4).
 
+
+## Local Development
+
+You can run InkyPi on your local machine (Mac/Linux) for development and testing without a Raspberry Pi or E-Ink display available.
+
+### Setup
+1.  Create a virtual environment and install dependencies:
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r install/requirements-local.txt
+    ```
+
+### Running Locally
+1.  Start the server in development mode:
+    ```bash
+    python src/inkypi.py --dev
+    ```
+2.  Access the web interface at [http://localhost:8080](http://localhost:8080).
+3.  View a fullscreen preview of the display at [http://localhost:8080/preview](http://localhost:8080/preview).
+    - In development mode, the E-Ink display is mocked, and images are generated to `mock_display_output/`.
+    - The preview page auto-refreshes every 2 seconds.
+
 ## Update
 To update your InkyPi with the latest code changes, follow these steps:
 1. Navigate to the project directory:

@@ -309,7 +309,7 @@ install_src() {
 }
 
 install_cli() {
-  cp -r "$SCRIPT_DIR/install/cli" "$INSTALL_PATH/"
+  cp -r "$SCRIPT_DIR/cli" "$INSTALL_PATH/"
   sudo chmod +x "$INSTALL_PATH/cli/"*.sh
 }
 

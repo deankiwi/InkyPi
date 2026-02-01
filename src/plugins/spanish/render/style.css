@@ -1,0 +1,108 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --card-bg: #f8f9fa;
+    --card-border: #dee2e6;
+    --accent-color: #2c3e50;
+    --pronun-color: #7f8c8d;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: {{ width }}px;
+    height: {{ height }}px;
+    font-family: 'Arial', sans-serif; /* Fallback, should use nice fonts if available */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.word-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex: 1 1 auto; /* Grow and shrink */
+    min-width: 120px; 
+    box-sizing: border-box;
+    /* Determine size based on count */
+}
+
+/* Typography Base Sizes */
+.spanish-word {
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: 0.2em;
+}
+
+.pronunciation {
+    font-style: italic;
+    color: var(--pronun-color);
+    margin-bottom: 0.2em;
+}
+
+.english-meaning {
+    font-weight: normal;
+}
+
+/* Layout variants based on word count */
+
+/* 1 word: Use full space */
+.count-1 .word-card {
+    width: 90%;
+    height: 90%;
+}
+
+/* 2 words: Side by side or stacked */
+.count-2 .word-card {
+     width: 45%; 
+     height: 80%;
+}
+
+/* 3-4 words: 2x2 gridish */
+.count-3 .word-card,
+.count-4 .word-card {
+    width: 45%;
+    height: 45%;
+}
+
+/* 5-6 words: 2x3 or 3x2 */
+.count-5 .word-card,
+.count-6 .word-card {
+    width: 30%; /* 3 columns */
+    height: 45%; /* 2 rows */
+}
+
+/* Font Size Modifiers */
+.small { font-size: 14px; }
+.medium { font-size: 18px; }
+.large { font-size: 24px; }
+.xlarge { font-size: 32px; }
+
+/* Adjust specific elements based on size class */
+.small .spanish-word { font-size: 1.5em; }
+.medium .spanish-word { font-size: 1.5em; }
+.large .spanish-word { font-size: 1.5em; }
+.xlarge .spanish-word { font-size: 1.5em; }

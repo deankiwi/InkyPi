@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spanish Words</title>
+    {% for stylesheet in style_sheets %}
+        <link rel="stylesheet" href="{{ stylesheet }}">
+    {% endfor %}
+</head>
+<body class="{{ font_size }} {{ word_count_class }}">
+    <div class="container">
+        {% for word in words %}
+            <div class="word-card">
+                <div class="spanish-word">{{ word[0] }}</div>
+                <div class="pronunciation">/{{ word[2] }}/</div>
+                <div class="english-meaning">{{ word[1] }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

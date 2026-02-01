@@ -1,0 +1,90 @@
+<div class="form-group">
+    <label for="wordLimit" class="form-label">Base Word Limit</label>
+    <input type="number" id="wordLimit" name="wordLimit" class="form-input" min="1" max="150" value="10" />
+    <span style="color: var(--text-secondary); font-size: 0.8rem;">How far down the list to pick words from initially.</span>
+</div>
+
+<div class="form-group">
+    <label for="incrementDaily" class="form-label">Add a word each day?</label>
+    <div class="toggle-container">
+        <input type="checkbox" id="incrementDaily" name="incrementDaily" class="toggle-checkbox" value="false"
+            onclick="this.value = this.checked ? 'true' : 'false'; toggleDateInput(this)">
+        <label for="incrementDaily" class="toggle-label"></label>
+    </div>
+</div>
+
+<div class="form-group" id="startDateGroup">
+    <label for="startDate" class="form-label">Start Date</label>
+    <input type="date" id="startDate" name="startDate" class="form-input" />
+    <span style="color: var(--text-secondary); font-size: 0.8rem;">Words will be added daily starting from this date.</span>
+</div>
+
+<div class="form-group">
+    <label for="numWordsToShow" class="form-label">Words to Show (1-6)</label>
+    <select id="numWordsToShow" name="numWordsToShow" class="form-select">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="fontSize" class="form-label">Font Size</label>
+    <select id="fontSize" name="fontSize" class="form-select">
+        <option value="small">Small</option>
+        <option value="medium" selected>Medium</option>
+        <option value="large">Large</option>
+        <option value="xlarge">Extra Large</option>
+    </select>
+</div>
+
+<script>
+    function toggleDateInput(toggle) {
+        const $dateGroup = document.getElementById('startDateGroup');
+        const $dateInput = document.getElementById('startDate');
+        
+        if (toggle.checked) {
+            $dateGroup.style.display = 'block';
+            if (!$dateInput.value) {
+                $dateInput.valueAsDate = new Date();
+            }
+        } else {
+            $dateGroup.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const $wordLimit = document.getElementById('wordLimit');
+        const $incrementDaily = document.getElementById('incrementDaily');
+        const $startDate = document.getElementById('startDate');
+        const $numWordsToShow = document.getElementById('numWordsToShow');
+        const $fontSize = document.getElementById('fontSize');
+        const $dateGroup = document.getElementById('startDateGroup');
+
+        if (loadPluginSettings) {
+            $wordLimit.value = pluginSettings.wordLimit || "10";
+            
+            $incrementDaily.checked = pluginSettings.incrementDaily === 'true';
+            $incrementDaily.value = pluginSettings.incrementDaily;
+            
+            $startDate.value = pluginSettings.startDate || "";
+            
+            $numWordsToShow.value = pluginSettings.numWordsToShow || "1";
+            $fontSize.value = pluginSettings.fontSize || "medium";
+            
+            // Initial visibility state
+            toggleDateInput($incrementDaily);
+        } else {
+             // Defaults
+            $wordLimit.value = "10";
+            $incrementDaily.checked = false;
+            $incrementDaily.value = "false";
+            $numWordsToShow.value = "1";
+            $fontSize.value = "medium";
+            $dateGroup.style.display = 'none';
+        }
+    });
+</script>

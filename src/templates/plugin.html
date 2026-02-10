@@ -24,21 +24,28 @@
     <!-- Select2 JS -->
     <script src="{{ url_for('static', filename='scripts/select2.min.js') }}"></script>
 
+    <script id="plugin-context" type="application/json">
+        {
+            "pluginSettings": {{ plugin_settings | tojson if plugin_settings else {} }},
+            "pluginInstanceName": {{ plugin_instance | default('') | tojson }},
+            "pluginDisplayName": {{ plugin.display_name | tojson }},
+            "styleSettings": {{ style_settings | default(false) | tojson }},
+            "refreshSettings": {{ refresh_settings | tojson if refresh_settings else {} }}
+        }
+    </script>
     <script>
-        const pluginSettings = {{ plugin_settings | tojson if plugin_settings else {} }};
-        const pluginInstanceName ='{{ plugin_instance }}';
-        const pluginDisplayName = {{ plugin.display_name | tojson }};
-        const loadPluginSettings = pluginInstanceName != '';
-        const styleSettings = {{ style_settings | default(false) | tojson }};
-        const refreshSettings = {{ refresh_settings | tojson if refresh_settings else {} }};
+        const context = JSON.parse(document.getElementById('plugin-context').textContent);
+        const { pluginSettings, pluginInstanceName, pluginDisplayName, styleSettings, refreshSettings } = context;
+        const loadPluginSettings = pluginInstanceName !== '';
 
         let uploadedFiles = {};
 
         // Initialize refresh settings managers
         let editRefreshManager = null;
-        {% if plugin_instance %}
-        editRefreshManager = createRefreshSettingsManager('refreshSettingsModal', 'edit');
-        {% endif %}
+        
+        if (pluginInstanceName) {
+            editRefreshManager = createRefreshSettingsManager('refreshSettingsModal', 'edit');
+        }
 
         async function saveRefreshSettings() {
             if (!editRefreshManager) return;

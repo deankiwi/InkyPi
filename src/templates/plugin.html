@@ -27,6 +27,7 @@
     <script>
         const pluginSettings = {{ plugin_settings | tojson if plugin_settings else {} }};
         const pluginInstanceName ='{{ plugin_instance }}';
+        const pluginDisplayName = {{ plugin.display_name | tojson }};
         const loadPluginSettings = pluginInstanceName != '';
         const styleSettings = {{ style_settings | default(false) | tojson }};
         const refreshSettings = {{ refresh_settings | tojson if refresh_settings else {} }};
@@ -84,6 +85,40 @@
             });
 
             if (action == "add_to_playlist"){
+                // Auto-generate instance name if empty
+                const instanceInput = document.getElementById('instance');
+                if (!instanceInput.value.trim()) {
+                    const date = new Date();
+                    const timestamp = date.getFullYear().toString() +
+                        (date.getMonth() + 1).toString().padStart(2, '0') +
+                        date.getDate().toString().padStart(2, '0') +
+                        date.getHours().toString().padStart(2, '0') +
+                        date.getMinutes().toString().padStart(2, '0') +
+                        date.getSeconds().toString().padStart(2, '0');
+                    
+                    // Sanitize plugin name (alphanumeric and spaces only)
+                    const safePluginName = pluginDisplayName.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+                    instanceInput.value = `${safePluginName} ${timestamp}`;
+                }
+
+                // Handle default refresh settings validation
+                const refreshType = document.querySelector('input[name="refreshType"]:checked').value;
+                if (refreshType === 'interval') {
+                    const intervalInput = document.getElementById('add-interval');
+                    const unitInput = document.getElementById('add-unit');
+                    if (!intervalInput.value) {
+                        intervalInput.value = "1";
+                    }
+                    if (!unitInput.value) {
+                        unitInput.value = "hour";
+                    }
+                } else if (refreshType === 'scheduled') {
+                    const scheduledInput = document.getElementById('add-scheduled');
+                    if (!scheduledInput.value) {
+                        scheduledInput.value = "09:00";
+                    }
+                }
+
                 url = '{{ url_for("playlist.add_plugin") }}';
                 const scheduleFormData = new FormData(scheduleForm);
                 const scheduleData = {};
@@ -141,6 +176,19 @@
 
             // Generic modal opening for other modals
             const modal = document.getElementById(modal_id);
+            
+            // Set defaults when opening "Add to Playlist" modal
+            if (modal_id === 'scheduleModal') {
+                const intervalInput = document.getElementById('add-interval');
+                const unitInput = document.getElementById('add-unit');
+                const scheduledInput = document.getElementById('add-scheduled');
+                
+                // Only set if empty (though modal inputs are cleared on submit, this ensures fresh defaults if cleared)
+                if (!intervalInput.value) intervalInput.value = "1";
+                if (!unitInput.value) unitInput.value = "hour";
+                if (!scheduledInput.value) scheduledInput.value = "09:00";
+            }
+
             if (modal) modal.style.display = 'block';
         }
 
@@ -452,7 +500,7 @@
                 </div>
                 <div class="form-group">
                     <label for="instance" class="form-label">Instance Name:</label>
-                    <input type="text" id="instance" name="instance_name" placeholder="Type something..." required class="form-input">
+                    <input type="text" id="instance" name="instance_name" placeholder="Type something..." class="form-input">
                 </div>
 
                 {% set prefix = "add" %}
